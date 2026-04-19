@@ -3,110 +3,97 @@ import pandas as pd
 import os
 from datetime import datetime
 
-# --- 1. App Configuration ---
-st.set_page_config(page_title="Full Production Line Control", layout="centered")
-st.title("📲 BIRMA Factory Operation Management")
+# --- 1. Master Configuration ---
+st.set_page_config(page_title="Production Line Pro", layout="centered")
 
-# --- 2. Database (Log) Setup ---
-LOG_FILE = 'maintenance_logs.csv'
-if not os.path.exists(LOG_FILE):
-    pd.DataFrame(columns=['Date', 'Machine', 'Task', 'Standards', 'Status', 'Technician_Note', 'Staff']).to_csv(LOG_FILE, index=False)
-
-# --- 3. Sidebar: Full Line Machine Selection ---
-st.sidebar.title("Line Control")
-selected_date = st.sidebar.date_input("Operation Date", datetime.now())
-
-# Added all the requested machines
-machine_dict = {
+# --- 2. Dynamic Machine Directory ---
+MACHINE_MAP = {
     "Blowing Machine": "blowing_machine.xlsx",
     "Labeling Machine": "labeling_machine.xlsx",
     "Conveyor System": "conveyor_machine.xlsx",
     "Packing Machine": "packing_machine.xlsx",
-    "Palletizer Machine": "paletizer_machine.xlsx",
-    "Shrink Machine": "shrink_machine.xlsx"
+    "Palletizer Unit": "paletizer_machine.xlsx",
+    "shrink Machine": "shrink_machine.xlsx"
 }
 
-selected_machine = st.sidebar.selectbox("Select Machine Unit", list(machine_dict.keys()))
-active_file = machine_dict[selected_machine]
+# --- 3. Sidebar Setup ---
+st.sidebar.title("Factory Control")
+target_date = st.sidebar.date_input("Select Log Date", datetime.now())
+unit_name = st.sidebar.selectbox("Active Unit", list(MACHINE_MAP.keys()))
+unit_file = MACHINE_MAP[unit_name]
 
-# --- 4. Data Loading Logic ---
-@st.cache_data
-def load_machine_data(file_path):
-    if os.path.exists(file_path):
+# --- 4. Database Persistence ---
+LOG_FILE = 'maintenance_logs.csv'
+if not os.path.exists(LOG_FILE):
+    # Added 'Technician_Signature' to the permanent record
+    pd.DataFrame(columns=['Date', 'Machine', 'Task', 'Procedure', 'Status', 'Notes', 'Technician_Signature']).to_csv(LOG_FILE, index=False)
+
+# --- 5. Data Loader ---
+def load_factory_data(path):
+    if os.path.exists(path):
         try:
-            # Consistent formatting for all excel files
-            df = pd.read_excel(file_path, skiprows=2, engine='openpyxl')
-            # Standardizing column names for the app logic
-            df.columns = ['Category', 'No', 'Name', 'Photo', 'Tools', 'Standards', 'Freq', 'Status', 'Note', 'Staff']
+            df = pd.read_excel(path, skiprows=2, engine='openpyxl')
+            df.columns = ['Category', 'No', 'Name', 'Photo', 'Tools', 'Procedure', 'Freq', 'Status', 'Note', 'Staff']
             df['Category'] = df['Category'].ffill()
             return df
-        except Exception as e:
-            st.error(f"Error reading {file_path}: {e}")
+        except:
             return None
     return None
 
-df_maint = load_machine_data(active_file)
+engine_data = load_factory_data(unit_file)
 
-# --- 5. Execution Interface ---
-st.header(f"🔧 {selected_machine}")
-st.write(f"Maintenance Checklist for: **{selected_date}**")
+# --- 6. Interface ---
+st.header(f"⚙️ {unit_name}")
+st.write(f"Technician Dashboard | **{target_date}**")
 
-if df_maint is not None:
-    with st.form("operation_form"):
-        # Filter for Daily tasks to keep the UI clean
-        daily_tasks = df_maint[df_maint['Freq'] == 'Daily']
-        
-        if daily_tasks.empty:
-            st.info("No daily tasks found for this machine. Check Weekly/Monthly schedules.")
-        
-        log_entries = []
+if engine_data is not None:
+    with st.form("mobile_log_form"):
+        # Focus on Daily tasks
+        daily_list = engine_data[engine_data['Freq'] == 'Daily']
+        submission_queue = []
 
-        for idx, row in daily_tasks.iterrows():
-            st.markdown(f"#### {row['Name']}")
+        for i, row in daily_list.iterrows():
+            st.markdown(f"**Task: {row['Name']}**")
+            st.warning(f"💡 **Procedure:** {row['Procedure']}")
             
-            # Displaying the "Standards" as requested - The Procedure to follow
-            st.warning(f"📋 **Action Required:** {row['Standards']}")
-            
-            col_img, col_inputs = st.columns([1, 2])
-            
-            with col_img:
-                image_path = f"images/{row['Photo']}"
-                if pd.notna(row['Photo']) and os.path.exists(image_path):
-                    st.image(image_path, width=120)
-                else:
-                    st.caption("No image")
+            c1, c2 = st.columns([1, 2])
+            with c1:
+                is_ok = st.checkbox("Done", key=f"check_{i}")
+            with c2:
+                comment = st.text_input("Observation", key=f"obs_{i}")
 
-            with col_inputs:
-                is_done = st.checkbox("Task Completed", key=f"check_{idx}")
-                note = st.text_input("Tech Observation", key=f"note_{idx}", placeholder="Any issues?")
-                
-                if is_done:
-                    log_entries.append({
-                        'Date': selected_date,
-                        'Machine': selected_machine,
-                        'Task': row['Name'],
-                        'Standards': row['Standards'],
-                        'Status': 'Completed',
-                        'Technician_Note': note,
-                        'Staff': "Field Technician"
-                    })
+            if is_ok:
+                submission_queue.append({
+                    'Date': target_date,
+                    'Machine': unit_name,
+                    'Task': row['Name'],
+                    'Procedure': row['Procedure'],
+                    'Status': 'Verified',
+                    'Notes': comment
+                })
             st.divider()
 
-        # Submit to Log
-        if st.form_submit_button("Submit Unit Report"):
-            if log_entries:
-                current_log = pd.read_csv(LOG_FILE)
-                new_data = pd.DataFrame(log_entries)
-                pd.concat([current_log, new_data], ignore_index=True).to_csv(LOG_FILE, index=False)
-                st.success(f"Log for {selected_machine} saved successfully!")
-            else:
-                st.error("Please mark tasks as completed before submitting.")
-else:
-    st.error(f"File '{active_file}' is missing. Please add the Excel file to the project folder.")
+        # --- SIGNATURE SECTION ---
+        st.subheader("✍️ Final Validation")
+        signature = st.text_input("Enter Technician Full Name (Signature):", placeholder="e.g. Ahmed Ali")
 
-# --- 6. Manager View (Quick Check) ---
-if st.checkbox("Show Recent Logs"):
-    st.subheader("Last 10 Records")
+        if st.form_submit_button("Submit Unit Report"):
+            if not signature:
+                st.error("❌ Submission Failed: Technician signature is required!")
+            elif submission_queue:
+                # Add the signature to all completed tasks in this session
+                for entry in submission_queue:
+                    entry['Technician_Signature'] = signature
+                
+                history = pd.read_csv(LOG_FILE)
+                pd.concat([history, pd.DataFrame(submission_queue)], ignore_index=True).to_csv(LOG_FILE, index=False)
+                st.success(f"✅ Report for {unit_name} signed by {signature} and synced!")
+            else:
+                st.warning("No tasks were marked as completed.")
+else:
+    st.error(f"Waiting for {unit_file}. Please ensure file is in the directory.")
+
+# --- 7. Manager View (Optional Check) ---
+if st.checkbox("Show Recent Signed Logs"):
     if os.path.exists(LOG_FILE):
-        history = pd.read_csv(LOG_FILE)
-        st.dataframe(history.tail(10))
+        st.dataframe(pd.read_csv(LOG_FILE).tail(10))
