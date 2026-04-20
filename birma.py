@@ -117,3 +117,11 @@ if st.sidebar.checkbox("مراجعة سجل جوجل شيت"):
         st.dataframe(live_data.tail(15))
     except Exception as e:
         st.sidebar.error(f"تعذر جلب البيانات: {e}")
+if st.button("اختبار المزامنة الآن"):
+    try:
+        # جلب البيانات الحالية (بدون وضع رابط يدوي هنا)
+        df = conn.read()
+        st.write("تم الاتصال بنجاح! هذه هي آخر البيانات:")
+        st.dataframe(df.tail(5))
+    except Exception as e:
+        st.error(f"فشل الاتصال: {e}")        
