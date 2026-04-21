@@ -94,7 +94,11 @@ if engine_data is not None:
                     
                     conn.update(spreadsheet=url, data=final_df)
                     st.success("✅ تم التحديث بنجاح!")
-                except Exception as e:
-                    st.error(f"حدث خطأ أثناء المزامنة: {e}")
+                eimport traceback
+
+                   except Exception as e:
+                  st.error("حدث خطأ أثناء المزامنة:")
+                  st.code(str(e))
+                  st.code(traceback.format_exc())
             else:
                 st.warning("يرجى اختيار مهام.")
