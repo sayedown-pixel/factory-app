@@ -107,9 +107,9 @@ PRODUCTION_CONFIG = {
         "السرعة": {"200 ml Carton": 40000, "200 ml Shrink": 40000, "330 ml Carton": 40000, "331 ml Shrink": 40000}
     }
 }
-MACHINE_MAP = {"النفخ": "blowing_machine.xlsx", "الليبل": "labeling_machine.xlsx", "السيور": "Conveyor_machine.xlsx", 
-               "الكرتون": "packing_machine.xlsx", "البالتايزر": "paletizer_machine.xlsx", 
-               "الشرنك": "shrink_machine.xlsx", "التعبئة": "Filling_machine.xlsx"}
+MACHINE_MAP = {"النفخ(blowing)": "blowing_machine.xlsx", "الليبل(label)": "labeling_machine.xlsx", "السيور(conveyor)": "Conveyor_machine.xlsx", 
+               "الكرتون(carton)": "packing_machine.xlsx", "البالتايزر(paletizer": "paletizer_machine.xlsx", 
+               "الشرنك(shrink)": "shrink_machine.xlsx", "التعبئة(filling)": "Filling_machine.xlsx"}
 
 # --- 5. قسم الإنتاج ---
 if app_mode == LANG[ln]["mode_prod"]:
