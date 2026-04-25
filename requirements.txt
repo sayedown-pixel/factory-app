@@ -1,6 +1,7 @@
 streamlit
-streamlit-gsheets
+st-gsheets-connection
 pandas
 scikit-learn
 statsmodels
 plotly
+requests
