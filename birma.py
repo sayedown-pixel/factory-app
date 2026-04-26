@@ -118,8 +118,8 @@ CONFIG = {
                   "العبوات": {"200 ml Carton": 48, "200 ml Shrink": 20, "330 ml Carton": 40, "331 ml Shrink": 20},
                   "السرعة": {"200 ml Carton": 40000, "200 ml Shrink": 40000, "330 ml Carton": 40000, "331 ml Shrink": 40000}}
 }
-MACHINE_MAP = {"النفخ": "blowing_machine.xlsx", "الليبل": "labeling_machine.xlsx", "السيور": "Conveyor_machine.xlsx", 
-               "الكرتون": "packing_machine.xlsx", "البالتايزر": "paletizer_machine.xlsx", "الشرنك": "shrink_machine.xlsx", "التعبئة": "Filling_machine.xlsx"}
+MACHINE_MAP = {"(blowing)النفخ": "blowing_machine.xlsx", "(label)الليبل": "labeling_machine.xlsx", "(conveyor)السيور": "Conveyor_machine.xlsx", 
+               "(carton)الكرتون": "packing_machine.xlsx", "(palitizer)البالتايزر": "paletizer_machine.xlsx", "(shrink)الشرنك": "shrink_machine.xlsx", "(filler)التعبئة": "Filling_machine.xlsx"}
 
 # --- 5. واجهة المستخدم ---
 selected_menu = st.sidebar.selectbox("Menu", LANG[ln]["menu"])
