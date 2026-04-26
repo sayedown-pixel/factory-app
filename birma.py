@@ -47,7 +47,7 @@ LANG = {
         "del_success": "🗑 تم حذف السجل بنجاح"
     },
     "en": {
-        "designer": "Eng. Elsayed Aoun",
+        "designer": "Eng. Elsayed Oun",
         "menu": ["📈 Production Management", "🔧 Maintenance Center", "📊 Records & Reports"],
         "line_label": "Working Line",
         "sup_label": "Supervisor Name",
