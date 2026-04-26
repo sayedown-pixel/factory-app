@@ -1,0 +1,8 @@
+streamlit
+streamlit-gsheets
+pandas
+requests
+plotly
+scikit-learn
+statsmodels
+Pillow
