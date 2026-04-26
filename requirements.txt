@@ -6,3 +6,4 @@ plotly
 requests
 Pillow
 openpyxl
+st-gsheets-connection
