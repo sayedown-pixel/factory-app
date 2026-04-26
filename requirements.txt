@@ -1,8 +1,8 @@
 streamlit
-streamlit-gsheets
+st-gsheets-connection
 pandas
-requests
-plotly
 scikit-learn
-statsmodels
+plotly
+requests
 Pillow
+openpyxl
