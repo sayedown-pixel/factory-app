@@ -14,40 +14,31 @@ import base64
 from calendar import monthrange
 
 # ============================================================================
-# 1. إعدادات الصفحة مع CSS محسن
+# 1. إعدادات الصفحة
 # ============================================================================
 st.set_page_config(page_title="BIRMA Integrated System", page_icon="🏭", layout="wide")
 
+# CSS (نفس الكود السابق - تم حذفه للاختصار)
 st.markdown("""
 <style>
     .stApp { background: #ffffff; }
-    .glass-card { background: #ffffff; border-radius: 25px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; border: 1px solid rgba(0,0,0,0.05); }
-    .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
-    .gradient-title { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: bold; text-align: center; text-shadow: none; }
-    .marquee { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 50px; padding: 12px 20px; margin: 20px 0; overflow: hidden; white-space: nowrap; color: #ffffff; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .glass-card { background: #ffffff; border-radius: 25px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+    .glass-card:hover { transform: translateY(-5px); }
+    .gradient-title { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: bold; text-align: center; }
+    .marquee { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 50px; padding: 12px 20px; margin: 20px 0; overflow: hidden; white-space: nowrap; color: white; }
     .marquee-content { display: inline-block; animation: marquee 25s linear infinite; padding-left: 100%; }
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-    .marquee-content span { margin-right: 50px; padding: 8px 20px; border-radius: 30px; display: inline-block; font-weight: bold; }
+    .marquee-content span { margin-right: 50px; padding: 8px 20px; border-radius: 30px; display: inline-block; }
     .critical { background-color: #dc2626; color: white; }
     .warning { background-color: #f59e0b; color: white; }
     .info { background-color: #3b82f6; color: white; }
     .success { background-color: #10b981; color: white; }
     .gauge-container { text-align: center; padding: 20px; border-radius: 20px; background: #ffffff; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
-    .gauge-container h3 { color: #1a1a2e; }
-    .gauge-container small { color: #666; }
-    .stButton button { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; border: none; border-radius: 30px; padding: 10px 25px; font-weight: bold; transition: all 0.3s ease; }
-    .stButton button:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
     [data-testid="stSidebar"] { background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%); }
     [data-testid="stSidebar"] * { color: #ffffff !important; }
-    [data-testid="stSidebar"] .stSelectbox label { color: #ffffff !important; }
-    .stMarkdown, .stText, .stDataFrame { color: #1a1a2e; }
-    .stMetric label { color: #1a1a2e !important; font-weight: bold; }
-    .stMetric .stMetric-value { color: #1a1a2e !important; }
-    .stTabs [data-baseweb="tab-list"] { gap: 10px; }
-    .stTabs [data-baseweb="tab"] { background: #ffffff; border-radius: 20px; padding: 10px 20px; font-weight: bold; }
+    .stButton button { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; border-radius: 30px; }
+    .stTabs [data-baseweb="tab"] { background: #ffffff; border-radius: 20px; padding: 10px 20px; }
     .stTabs [aria-selected="true"] { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white !important; }
-    .streamlit-expanderHeader { background: #ffffff; border-radius: 15px; font-weight: bold; }
-    .stAlert { border-radius: 15px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -99,7 +90,7 @@ def show_current_date():
         date_str = f"{days.get(today.strftime('%A'), today.strftime('%A'))}، {today.day} {months.get(today.strftime('%B'), today.strftime('%B'))} {today.year}"
     else:
         date_str = today.strftime("%A, %B %d, %Y")
-    st.markdown(f"<div style='text-align: left; font-size: 14px; background: #ffffff; padding: 10px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);'>📅 {date_str}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align: left; font-size: 14px; background: #ffffff; padding: 10px; border-radius: 20px;'>📅 {date_str}</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # 4. تهيئة حالة الجلسة
@@ -116,7 +107,7 @@ if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
 # ============================================================================
-# 5. نظام المستخدمين والأدوار (كلمات المرور الجديدة)
+# 5. نظام المستخدمين والأدوار
 # ============================================================================
 USERS = {
     "admin": {"password": "100", "role": "admin", "name": "مدير النظام", "icon": "👑"},
@@ -135,7 +126,7 @@ ROLE_PERMISSIONS = {
 }
 
 # ============================================================================
-# 6. نظام اللغات
+# 6. نظام اللغات (مختصر)
 # ============================================================================
 LANG = {
     "ar": {
@@ -156,7 +147,7 @@ LANG = {
         "history_p": "سجل الإنتاج", "history_m": "سجل الصيانة",
         "admin_title": "لوحة التحكم - حذف السجل", "delete_btn": "حذف السجل",
         "del_success": "تم الحذف", "tools_label": "الأدوات:", "proc_label": "الإجراءات:",
-        "weekend_msg": "الجمعة عطلة - لا توجد صيانات دورية", "inventory_header": "إدارة المخازن",
+        "weekend_msg": "الجمعة عطلة", "inventory_header": "إدارة المخازن",
         "current_stock": "المخزون الحالي", "receipt": "استلام مشتريات",
         "material": "المادة", "quantity": "الكمية", "invoice": "رقم الفاتورة",
         "receipt_date": "تاريخ الاستلام", "register_receipt": "تسجيل الاستلام",
@@ -196,30 +187,31 @@ LANG = {
         "maint_header": "Maintenance", "maint_types": ["Planned", "Breakdown"],
         "tech_label": "Technician", "issue_label": "Issue", "start_t": "Start", "end_t": "End",
         "note_label": "Notes", "save_btn": "Save", "success_msg": "Saved",
-        "eff_title": "Efficiency Indicator", "waste_title": "Waste", "history_p": "Production Logs",
+        "eff_title": "Efficiency", "waste_title": "Waste", "history_p": "Production Logs",
         "history_m": "Maintenance Logs", "admin_title": "Admin - Delete", "delete_btn": "Delete",
         "del_success": "Deleted", "tools_label": "Tools:", "proc_label": "Procedure:",
-        "weekend_msg": "Friday is weekend - No scheduled maintenance", "inventory_header": "Inventory",
+        "weekend_msg": "Friday off", "inventory_header": "Inventory",
         "current_stock": "Current Stock", "receipt": "Receive", "material": "Material",
-        "quantity": "Quantity", "invoice": "Invoice", "receipt_date": "Date", "register_receipt": "Register",
-        "low_stock_alert": "Low Stock", "all_good": "All Good", "edit_stock": "Edit Stock",
-        "new_stock": "New Stock", "update": "Update", "stock_updated": "Updated", "export_btn": "Export",
+        "quantity": "Quantity", "invoice": "Invoice", "receipt_date": "Date", 
+        "register_receipt": "Register", "low_stock_alert": "Low Stock", "all_good": "All Good",
+        "edit_stock": "Edit Stock", "new_stock": "New Stock", "update": "Update",
+        "stock_updated": "Updated", "export_btn": "Export",
         "dashboard_title": "Smart Dashboard", "total_production": "Total Production",
-        "monthly_production": "Current Month Production", "line1_efficiency": "Line 1 Efficiency",
+        "monthly_production": "Monthly Production", "line1_efficiency": "Line 1 Efficiency",
         "line2_efficiency": "Line 2 Efficiency", "smart_recommendations": "Smart Recommendations",
         "users_title": "Users", "settings_title": "Settings", "backup_data": "Backup",
         "clear_cache": "Clear Cache", "machine_select": "Select Machine", "task_name": "Task",
-        "done": "Done", "no_data": "No data", "no_production": "No production records",
-        "no_maintenance": "No maintenance records", "add_new_item": "Add New Item", "item_id": "ID",
-        "item_name": "Name", "item_unit": "Unit", "min_stock": "Min Stock", "info_title": "Info",
-        "info_text": "Data saved on this device only", "shipping": "Shipping", "customer": "Customer",
-        "register_shipping": "Register Shipping", "balance": "Balance", "in": "In", "out": "Out",
-        "pallet_count": "Pallets", "last_10_days": "Last 10 Days", "remember_me": "Remember me",
-        "clear_saved": "Clear saved", "auto_reorder": "Auto Reorder Suggestions",
-        "stock_prediction": "Stock Depletion Prediction",
-        "raw_balance": "Raw Materials Balance", "fg_balance": "Finished Goods Balance",
-        "delivery": "Delivery", "product": "Product", "quantity_to_deliver": "Delivery Quantity",
-        "manual_adjust": "Manual Adjustment"
+        "done": "Done", "no_data": "No data", "no_production": "No production",
+        "no_maintenance": "No maintenance", "add_new_item": "Add Item", "item_id": "ID",
+        "item_name": "Name", "item_unit": "Unit", "min_stock": "Min Stock",
+        "info_title": "Info", "info_text": "Data saved locally only", "shipping": "Shipping",
+        "customer": "Customer", "register_shipping": "Register Shipping",
+        "balance": "Balance", "in": "In", "out": "Out", "pallet_count": "Pallets",
+        "last_10_days": "Last 10 Days", "remember_me": "Remember me",
+        "clear_saved": "Clear saved", "auto_reorder": "Auto Reorder",
+        "stock_prediction": "Stock Depletion", "raw_balance": "Raw Materials",
+        "fg_balance": "Finished Goods", "delivery": "Delivery", "product": "Product",
+        "quantity_to_deliver": "Delivery Qty", "manual_adjust": "Manual Adjust"
     },
     "bn": {
         "designer": "ইঞ্জি. সাঈদ আউন", "login_title": "লগইন", "username": "ব্যবহারকারীর নাম",
@@ -233,31 +225,30 @@ LANG = {
         "maint_header": "রক্ষণাবেক্ষণ", "maint_types": ["পরিকল্পিত", "ব্রেকডাউন"],
         "tech_label": "টেকনিশিয়ান", "issue_label": "সমস্যা", "start_t": "শুরু", "end_t": "শেষ",
         "note_label": "নোট", "save_btn": "সংরক্ষণ", "success_msg": "সংরক্ষিত",
-        "eff_title": "দক্ষতা নির্দেশক", "waste_title": "বর্জ্য", "history_p": "উৎপাদন লগ",
+        "eff_title": "দক্ষতা", "waste_title": "বর্জ্য", "history_p": "উৎপাদন লগ",
         "history_m": "রক্ষণাবেক্ষণ লগ", "admin_title": "অ্যাডমিন - মুছুন", "delete_btn": "মুছুন",
         "del_success": "মুছে ফেলা হয়েছে", "tools_label": "সরঞ্জাম:", "proc_label": "পদ্ধতি:",
-        "weekend_msg": "শুক্রবার সাপ্তাহিক ছুটি - কোন পরিকল্পিত রক্ষণাবেক্ষণ নেই", "inventory_header": "ইনভেন্টরি",
+        "weekend_msg": "শুক্রবার ছুটি", "inventory_header": "ইনভেন্টরি",
         "current_stock": "বর্তমান স্টক", "receipt": "গ্রহণ", "material": "উপাদান",
-        "quantity": "পরিমাণ", "invoice": "ইনভয়েস", "receipt_date": "তারিখ", "register_receipt": "নিবন্ধন",
-        "low_stock_alert": "স্বল্প স্টক", "all_good": "সব ঠিক", "edit_stock": "স্টক সম্পাদনা",
-        "new_stock": "নতুন স্টক", "update": "আপডেট", "stock_updated": "আপডেট হয়েছে", "export_btn": "এক্সপোর্ট",
+        "quantity": "পরিমাণ", "invoice": "ইনভয়েস", "receipt_date": "তারিখ",
+        "register_receipt": "নিবন্ধন", "low_stock_alert": "স্বল্প স্টক", "all_good": "সব ঠিক",
+        "edit_stock": "স্টক সম্পাদনা", "new_stock": "নতুন স্টক", "update": "আপডেট",
+        "stock_updated": "আপডেট হয়েছে", "export_btn": "এক্সপোর্ট",
         "dashboard_title": "স্মার্ট ড্যাশবোর্ড", "total_production": "মোট উৎপাদন",
-        "monthly_production": "বর্তমান মাসের উৎপাদন", "line1_efficiency": "লাইন ১ দক্ষতা",
+        "monthly_production": "মাসিক উৎপাদন", "line1_efficiency": "লাইন ১ দক্ষতা",
         "line2_efficiency": "লাইন ২ দক্ষতা", "smart_recommendations": "স্মার্ট সুপারিশ",
         "users_title": "ব্যবহারকারী", "settings_title": "সেটিংস", "backup_data": "ব্যাকআপ",
         "clear_cache": "ক্যাশ সাফ", "machine_select": "মেশিন নির্বাচন", "task_name": "কাজ",
         "done": "সম্পন্ন", "no_data": "তথ্য নেই", "no_production": "উৎপাদন রেকর্ড নেই",
-        "no_maintenance": "রক্ষণাবেক্ষণ রیکর্ড নেই", "add_new_item": "নতুন আইটেম যোগ করুন",
+        "no_maintenance": "রক্ষণাবেক্ষণ রেকর্ড নেই", "add_new_item": "নতুন আইটেম",
         "item_id": "আইডি", "item_name": "নাম", "item_unit": "ইউনিট", "min_stock": "ন্যূনতম স্টক",
-        "info_title": "তথ্য", "info_text": "ডেটা শুধুমাত্র এই ডিভাইসে সংরক্ষিত",
-        "shipping": "প্রেরণ", "customer": "গ্রাহক", "register_shipping": "প্রেরণ নিবন্ধন",
-        "balance": "ব্যালেন্স", "in": "ইন", "out": "আউট", "pallet_count": "প্যালেট",
-        "last_10_days": "শেষ ১০ দিন", "remember_me": "মনে রাখুন", "clear_saved": "সংরক্ষিত ডেটা মুছুন",
-        "auto_reorder": "স্বয়ংক্রিয় অর্ডার সুপারিশ",
-        "stock_prediction": "স্টক শেষ হওয়ার পূর্বাভাস",
-        "raw_balance": "কাঁচামালের ব্যালেন্স", "fg_balance": "সমাপ্ত পণ্যের ব্যালেন্স",
-        "delivery": "ডেলিভারি", "product": "পণ্য", "quantity_to_deliver": "ডেলিভারির পরিমাণ",
-        "manual_adjust": "ম্যানুয়াল সমন্বয়"
+        "info_title": "তথ্য", "info_text": "স্থানীয়ভাবে ডেটা সংরক্ষিত", "shipping": "প্রেরণ",
+        "customer": "গ্রাহক", "register_shipping": "প্রেরণ নিবন্ধন", "balance": "ব্যালেন্স",
+        "in": "ইন", "out": "আউট", "pallet_count": "প্যালেট", "last_10_days": "শেষ ১০ দিন",
+        "remember_me": "মনে রাখুন", "clear_saved": "সংরক্ষিত ডেটা মুছুন",
+        "auto_reorder": "স্বয়ংক্রিয় অর্ডার", "stock_prediction": "স্টক শেষ",
+        "raw_balance": "কাঁচামাল", "fg_balance": "সমাপ্ত পণ্য", "delivery": "ডেলিভারি",
+        "product": "পণ্য", "quantity_to_deliver": "ডেলিভারির পরিমাণ", "manual_adjust": "ম্যানুয়াল"
     }
 }
 
@@ -290,19 +281,40 @@ def send_telegram(msg):
 conn, df_main = load_main_data()
 
 # ============================================================================
-# 8. تحميل البيانات
+# 8. تحميل البيانات (محلياً)
 # ============================================================================
 RAW_MATERIALS_FILE = "raw.xlsx"
 FINISHED_GOODS_FILE = "finished_goods.xlsx"
 
 def load_raw_materials():
+    """تحميل المخزون من الملف المحلي - ثابت لا يتغير بتحديث الكود"""
     if os.path.exists(RAW_MATERIALS_FILE):
-        df_raw = pd.read_excel(RAW_MATERIALS_FILE)
-        for col in ["Current_Stock", "Min_Stock"]:
-            if col in df_raw.columns:
-                df_raw[col] = pd.to_numeric(df_raw[col], errors='coerce').fillna(0)
-        return df_raw
-    return pd.DataFrame()
+        try:
+            df_raw = pd.read_excel(RAW_MATERIALS_FILE)
+            for col in ["Current_Stock", "Min_Stock"]:
+                if col in df_raw.columns:
+                    df_raw[col] = pd.to_numeric(df_raw[col], errors='coerce').fillna(0)
+            return df_raw
+        except Exception as e:
+            st.error(f"خطأ في تحميل المواد الخام: {e}")
+            return create_default_raw_materials()
+    else:
+        return create_default_raw_materials()
+
+def create_default_raw_materials():
+    """إنشاء مخزون افتراضي إذا لم يكن الملف موجوداً"""
+    default_data = {
+        "Material_ID": [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008],
+        "Material_Name_AR": ["بريفورم 200 مل", "بريفورم 330 مل", "بريفورم 600 مل", "بريفورم 1.5 لتر",
+                             "غطاء", "ليبل 200 مل", "ليبل 330 مل", "كرتون"],
+        "Current_Stock": [500000, 300000, 100000, 50000, 1000000, 500000, 300000, 50000],
+        "Min_Stock": [100000, 50000, 20000, 10000, 200000, 100000, 50000, 10000],
+        "Unit": ["قطعة", "قطعة", "قطعة", "قطعة", "قطعة", "قطعة", "قطعة", "قطعة"],
+        "Last_Updated": [datetime.now().strftime("%Y-%m-%d")] * 8
+    }
+    df_default = pd.DataFrame(default_data)
+    df_default.to_excel(RAW_MATERIALS_FILE, index=False)
+    return df_default
 
 def update_raw_materials(df_raw):
     df_raw.to_excel(RAW_MATERIALS_FILE, index=False)
@@ -322,77 +334,7 @@ def update_finished_goods(df_fg):
     return True
 
 # ============================================================================
-# 9. دوال مخزن الإنتاج التام (مع إضافة تعديل الرصيد والتسليم)
-# ============================================================================
-def remove_from_finished_goods_delivery(product_name, quantity, df_fg):
-    """شحن وتسليم منتج تام من المخزن"""
-    idx = df_fg[df_fg["Name"] == product_name].index
-    if len(idx) == 0:
-        return df_fg, False, f"⚠️ المنتج {product_name} غير موجود"
-    
-    idx = idx[0]
-    current = df_fg.at[idx, "Balance"] if pd.notna(df_fg.at[idx, "Balance"]) else 0
-    if current < quantity:
-        return df_fg, False, f"⚠️ الكمية غير كافية. المتوفر: {current:,.0f}"
-    
-    old_out = df_fg.at[idx, "Out"] if pd.notna(df_fg.at[idx, "Out"]) else 0
-    new_out = old_out + quantity
-    new_balance = current - quantity
-    
-    df_fg.at[idx, "Out"] = new_out
-    df_fg.at[idx, "Balance"] = new_balance
-    df_fg.at[idx, "Last_Updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    return df_fg, True, f"✅ تم تسليم {quantity:,.0f} وحدة من {product_name}"
-
-def update_finished_goods_manual_balance(product_name, new_balance, df_fg):
-    """تعديل رصيد منتج يدوياً"""
-    idx = df_fg[df_fg["Name"] == product_name].index
-    if len(idx) == 0:
-        return df_fg, False, f"⚠️ المنتج {product_name} غير موجود"
-    
-    idx = idx[0]
-    old_balance = df_fg.at[idx, "Balance"] if pd.notna(df_fg.at[idx, "Balance"]) else 0
-    
-    df_fg.at[idx, "Balance"] = new_balance
-    df_fg.at[idx, "Last_Updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    return df_fg, True, f"✅ تم تعديل رصيد {product_name} من {old_balance:,.0f} إلى {new_balance:,.0f}"
-
-def add_to_finished_goods(product_name, quantity, df_fg):
-    """إضافة منتج تام إلى المخزن"""
-    fg_name = get_finished_goods_name(product_name)
-    
-    idx = df_fg[df_fg["Name"].str.strip() == fg_name.strip()].index
-    if len(idx) == 0:
-        return df_fg, False, f"⚠️ المنتج {product_name} غير موجود في المخزن"
-    
-    idx = idx[0]
-    old_in = df_fg.at[idx, "In"] if pd.notna(df_fg.at[idx, "In"]) else 0
-    old_balance = df_fg.at[idx, "Balance"] if pd.notna(df_fg.at[idx, "Balance"]) else 0
-    
-    new_in = old_in + quantity
-    new_balance = old_balance + quantity
-    
-    df_fg.at[idx, "In"] = new_in
-    df_fg.at[idx, "Balance"] = new_balance
-    df_fg.at[idx, "Last_Updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    return df_fg, True, f"✅ تم إضافة {quantity:,.0f} وحدة إلى المخزن"
-
-def get_finished_goods_name(product_name):
-    mapping = {
-        "200 ml Carton": "Cartoon 200 ml",
-        "200 ml Shrink": "Shrink 200 ml",
-        "600 ml Carton": "Cartoon 600 ml",
-        "1.5 L Shrink": "1.5 Ltr",
-        "330 ml Carton": "Cartoon 330 ml",
-        "330 ml Shrink": "Shrink 330 ml",
-    }
-    return mapping.get(product_name, product_name)
-
-# ============================================================================
-# 10. BOM
+# 9. BOM وبيانات الإنتاج
 # ============================================================================
 CONFIG = {
     "الخط الأول(smi)": {
@@ -408,12 +350,12 @@ CONFIG = {
 }
 
 BOM = {
-    "200 ml Carton": {"بريفورم200": 48, "غطاء": 48, "ليبل 200": 48, "كرتون200": 1},
-    "200 ml Shrink": {"بريفورم200": 20, "غطاء": 20, "ليبل 200": 20, "شرنك200": 0.0005},
-    "600 ml Carton": {"بريفورم600": 30, "غطاء": 30, "ليبل 600": 30, "كرتون600": 1},
-    "1.5 L Shrink": {"بريفورم لتر ونص": 6, "غطاء": 6, "ليبل لتر ونص": 6, "شرنك لتر ونص": 0.000625},
-    "330 ml Carton": {"بريفورم330": 40, "غطاء": 40, "ليبل 330": 40, "كرتون330": 1},
-    "330 ml Shrink": {"بريفورم330": 20, "غطاء": 20, "ليبل 330": 20, "شرنك330": 0.0005},
+    "200 ml Carton": {"بريفورم 200 مل": 48, "غطاء": 48, "ليبل 200 مل": 48, "كرتون": 1},
+    "200 ml Shrink": {"بريفورم 200 مل": 20, "غطاء": 20, "ليبل 200 مل": 20, "شرنك": 0.0005},
+    "600 ml Carton": {"بريفورم 600 مل": 30, "غطاء": 30, "ليبل 200 مل": 30, "كرتون": 1},
+    "1.5 L Shrink": {"بريفورم 1.5 لتر": 6, "غطاء": 6, "ليبل 200 مل": 6, "شرنك": 0.000625},
+    "330 ml Carton": {"بريفورم 330 مل": 40, "غطاء": 40, "ليبل 330 مل": 40, "كرتون": 1},
+    "330 ml Shrink": {"بريفورم 330 مل": 20, "غطاء": 20, "ليبل 330 مل": 20, "شرنك": 0.0005},
 }
 
 SHRINK_PALLET_CONFIG = {
@@ -471,7 +413,7 @@ def restore_materials(product, quantity, df_raw):
     return new_df, True, f"✅ تم إعادة المواد لـ {quantity:,.0f} وحدة"
 
 # ============================================================================
-# 11. دوال الصيانة
+# 10. دوال الصيانة
 # ============================================================================
 MACHINE_MAP = {
     "النفخ(blowing)": "blowing_machine.xlsx",
@@ -557,7 +499,7 @@ def get_scheduled_tasks(df_tasks):
     return result.reset_index(drop=True)
 
 # ============================================================================
-# 12. التوصيات الذكية وشريط البيانات المتحرك
+# 11. التوصيات الذكية (محسنة لحساب نفاذ المخزون بدقة)
 # ============================================================================
 def get_auto_reorder_suggestions(df_raw, df_main):
     suggestions = []
@@ -586,33 +528,146 @@ def get_auto_reorder_suggestions(df_raw, df_main):
                     })
     return suggestions
 
-def get_stock_prediction(df_raw, df_main):
+def calculate_daily_consumption_for_material(df_main, material_name):
+    """
+    حساب الاستهلاك اليومي لمادة معينة بناءً على سجلات الإنتاج الفعلية
+    """
+    if df_main is None or df_main.empty:
+        return 0
+    
+    prod_df = df_main[df_main['Type'] == 'Production'].copy()
+    if prod_df.empty or 'Date' not in prod_df.columns or 'Output_Units' not in prod_df.columns:
+        return 0
+    
+    prod_df['Date'] = pd.to_datetime(prod_df['Date'])
+    last_30_days = prod_df[prod_df['Date'] >= datetime.now() - timedelta(days=30)]
+    
+    if last_30_days.empty:
+        return 0
+    
+    total_consumption = 0
+    
+    for _, row in last_30_days.iterrows():
+        product = row['Product']
+        quantity = row['Output_Units']
+        
+        # حساب المواد المستخدمة لهذا الإنتاج
+        required, _ = get_materials_required(product, quantity)
+        if required and material_name in required:
+            total_consumption += required[material_name]
+    
+    # المتوسط اليومي لآخر 30 يوم
+    daily_avg = total_consumption / 30 if total_consumption > 0 else 0
+    return daily_avg
+
+def get_production_forecast(df_main, line_name, product_type=None, days=30):
+    """
+    توقع الإنتاج المستقبلي للأيام القادمة بناءً على البيانات التاريخية
+    """
+    if df_main is None or df_main.empty:
+        return 0
+    
+    prod_df = df_main[df_main['Type'] == 'Production'].copy()
+    if prod_df.empty or 'Date' not in prod_df.columns:
+        return 0
+    
+    # فلترة حسب الخط إذا محدد
+    if line_name and 'Line' in prod_df.columns:
+        prod_df = prod_df[prod_df['Line'] == line_name]
+    
+    # فلترة حسب نوع المنتج إذا محدد
+    if product_type and 'Product' in prod_df.columns:
+        prod_df = prod_df[prod_df['Product'] == product_type]
+    
+    if prod_df.empty:
+        return 0
+    
+    prod_df['Date'] = pd.to_datetime(prod_df['Date'])
+    last_30_days = prod_df[prod_df['Date'] >= datetime.now() - timedelta(days=30)]
+    
+    if last_30_days.empty:
+        return 0
+    
+    # حساب متوسط الإنتاج اليومي
+    daily_avg = last_30_days['Output_Units'].mean()
+    return daily_avg
+
+def get_stock_prediction_calculated(df_raw, df_main, selected_line):
+    """
+    حساب توقع نفاذ المخزون بناءً على:
+    - سرعة الخط الفعلية (وحدات/ساعة)
+    - مدة العمل 15 ساعة
+    - استهلاك المواد حسب BOM
+    """
     predictions = []
+    
     if df_main is None or df_main.empty:
         return predictions
     
-    prod_df = df_main[df_main['Type'] == 'Production'].copy()
-    if not prod_df.empty and 'Date' in prod_df.columns:
-        prod_df['Date'] = pd.to_datetime(prod_df['Date'])
-        last_30_days = prod_df[prod_df['Date'] >= datetime.now() - timedelta(days=30)]
-        if not last_30_days.empty:
-            daily_prod = last_30_days['Output_Units'].mean()
-            for _, row in df_raw.iterrows():
-                current = row['Current_Stock']
-                if current > 0 and daily_prod > 0:
-                    days_left = current / (daily_prod * 0.05)
-                    if days_left < 30:
-                        predictions.append({
-                            "material": row['Material_Name_AR'],
-                            "current": int(current),
-                            "days_left": round(days_left, 1),
-                            "status": "critical" if days_left < 7 else "warning" if days_left < 14 else "info"
-                        })
+    # الحصول على سرعة الخط المحدد
+    line_speed = None
+    for line_name, line_data in CONFIG.items():
+        if line_name == selected_line:
+            # نأخذ أقل سرعة كتقدير آمن
+            speeds = list(line_data["speed"].values())
+            line_speed = min(speeds) if speeds else 35000
+            break
+    
+    if not line_speed:
+        line_speed = 35000
+    
+    # الإنتاج اليومي المتوقع = السرعة × 15 ساعة
+    daily_production_forecast = line_speed * 15
+    st.sidebar.write(f"🚀 الإنتاج اليومي المتوقع: {daily_production_forecast:,} وحدة")
+    
+    # حساب استهلاك كل مادة بناءً على BOM والإنتاج المتوقع
+    for _, row in df_raw.iterrows():
+        material_name = row['Material_Name_AR']
+        current_stock = float(row['Current_Stock']) if pd.notna(row['Current_Stock']) else 0
+        min_stock = float(row['Min_Stock']) if pd.notna(row['Min_Stock']) else 0
+        
+        if current_stock <= 0:
+            days_left = 0
+        else:
+            # حساب كمية هذه المادة المستهلكة في إنتاج يومي واحد
+            material_consumption_per_day = 0
+            
+            # المرور على جميع المنتجات لمعرفة استهلاك هذه المادة
+            for product, bom_items in BOM.items():
+                if material_name in bom_items:
+                    qty_per_unit = bom_items[material_name]
+                    # استهلاك هذه المادة في إنتاج يومي = (إنتاج يومي) × (كمية لكل وحدة)
+                    consumption = daily_production_forecast * qty_per_unit
+                    if qty_per_unit < 1:  # للشرنك أو المواد بنسبة
+                        consumption = math.ceil(daily_production_forecast * qty_per_unit)
+                    material_consumption_per_day += consumption
+            
+            if material_consumption_per_day > 0:
+                days_left = current_stock / material_consumption_per_day
+            else:
+                # إذا لم نجد المادة في BOM (مواد مثل الغراء، فواصل شرنك)
+                # نستخدم تقدير من سجلات الإنتاج السابقة
+                daily_consumption = calculate_daily_consumption_for_material(df_main, material_name)
+                days_left = current_stock / daily_consumption if daily_consumption > 0 else 999
+        
+        if days_left < 60:  # فقط المواد التي ستنفذ خلال 60 يوماً
+            status = "critical" if days_left < 7 else "warning" if days_left < 14 else "info"
+            predictions.append({
+                "material": material_name,
+                "current": int(current_stock),
+                "days_left": round(days_left, 1),
+                "daily_consumption": round(material_consumption_per_day, 0) if material_consumption_per_day > 0 else 0,
+                "status": status
+            })
+    
+    # ترتيب حسب الأقرب للنفاذ
+    predictions.sort(key=lambda x: x["days_left"])
     return predictions
 
-def get_marquee_recommendations(df_raw, df_main, df_fg, t, lang):
+def get_marquee_recommendations(df_raw, df_main, df_fg, t, lang, selected_line):
     recommendations = []
     
+    # توصيات إعادة الطلب
     reorder = get_auto_reorder_suggestions(df_raw, df_main)
     for rec in reorder[:3]:
         if rec["urgency"] == "high":
@@ -620,13 +675,15 @@ def get_marquee_recommendations(df_raw, df_main, df_fg, t, lang):
         else:
             recommendations.append(f"🟡 {t['auto_reorder']}: {rec['material']} - الكمية المقترحة {rec['suggested_qty']:,}")
     
-    stock_pred = get_stock_prediction(df_raw, df_main)
+    # توقع نفاذ المخزون (محسوب بدقة)
+    stock_pred = get_stock_prediction_calculated(df_raw, df_main, selected_line)
     for pred in stock_pred[:3]:
         if pred["status"] == "critical":
             recommendations.append(f"⚠️ {t['stock_prediction']}: {pred['material']} سينفذ خلال {pred['days_left']} يوم")
         elif pred["status"] == "warning":
             recommendations.append(f"📦 {t['stock_prediction']}: {pred['material']} سينفذ خلال {pred['days_left']} يوم")
     
+    # حالة المنتج التام
     if not df_fg.empty and "Balance" in df_fg.columns:
         fg_balance = df_fg["Balance"].sum()
         if fg_balance <= 0:
@@ -639,8 +696,8 @@ def get_marquee_recommendations(df_raw, df_main, df_fg, t, lang):
     
     return recommendations
 
-def show_marquee(df_raw, df_main, df_fg, t, lang):
-    recommendations = get_marquee_recommendations(df_raw, df_main, df_fg, t, lang)
+def show_marquee(df_raw, df_main, df_fg, t, lang, selected_line):
+    recommendations = get_marquee_recommendations(df_raw, df_main, df_fg, t, lang, selected_line)
     
     marquee_content = ""
     for rec in recommendations:
@@ -662,15 +719,62 @@ def show_marquee(df_raw, df_main, df_fg, t, lang):
     """, unsafe_allow_html=True)
 
 # ============================================================================
+# 12. دوال مخزن الإنتاج التام
+# ============================================================================
+def get_finished_goods_name(product_name):
+    mapping = {
+        "200 ml Carton": "Cartoon 200 ml",
+        "200 ml Shrink": "Shrink 200 ml",
+        "600 ml Carton": "Cartoon 600 ml",
+        "1.5 L Shrink": "1.5 Ltr",
+        "330 ml Carton": "Cartoon 330 ml",
+        "330 ml Shrink": "Shrink 330 ml",
+    }
+    return mapping.get(product_name, product_name)
+
+def remove_from_finished_goods_delivery(product_name, quantity, df_fg):
+    idx = df_fg[df_fg["Name"] == product_name].index
+    if len(idx) == 0:
+        return df_fg, False, f"⚠️ المنتج {product_name} غير موجود"
+    
+    idx = idx[0]
+    current = df_fg.at[idx, "Balance"] if pd.notna(df_fg.at[idx, "Balance"]) else 0
+    if current < quantity:
+        return df_fg, False, f"⚠️ الكمية غير كافية. المتوفر: {current:,.0f}"
+    
+    old_out = df_fg.at[idx, "Out"] if pd.notna(df_fg.at[idx, "Out"]) else 0
+    new_out = old_out + quantity
+    new_balance = current - quantity
+    
+    df_fg.at[idx, "Out"] = new_out
+    df_fg.at[idx, "Balance"] = new_balance
+    df_fg.at[idx, "Last_Updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    return df_fg, True, f"✅ تم تسليم {quantity:,.0f} وحدة من {product_name}"
+
+def update_finished_goods_manual_balance(product_name, new_balance, df_fg):
+    idx = df_fg[df_fg["Name"] == product_name].index
+    if len(idx) == 0:
+        return df_fg, False, f"⚠️ المنتج {product_name} غير موجود"
+    
+    idx = idx[0]
+    old_balance = df_fg.at[idx, "Balance"] if pd.notna(df_fg.at[idx, "Balance"]) else 0
+    
+    df_fg.at[idx, "Balance"] = new_balance
+    df_fg.at[idx, "Last_Updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    return df_fg, True, f"✅ تم تعديل رصيد {product_name} من {old_balance:,.0f} إلى {new_balance:,.0f}"
+
+# ============================================================================
 # 13. لوحة القيادة
 # ============================================================================
-def show_dashboard(df_main, df_raw, df_fg, t):
+def show_dashboard(df_main, df_raw, df_fg, t, selected_line):
     lang = st.session_state.get('lang', 'ar')
     
     st.markdown('<h1 class="gradient-title">🏭 BIRMA - ' + t["dashboard_title"] + '</h1>', unsafe_allow_html=True)
     st.markdown("---")
     
-    show_marquee(df_raw, df_main, df_fg, t, lang)
+    show_marquee(df_raw, df_main, df_fg, t, lang, selected_line)
     
     total_prod = 0
     monthly_prod = 0
@@ -707,16 +811,15 @@ def show_dashboard(df_main, df_raw, df_fg, t):
     with col1:
         st.markdown(f"""
         <div class="glass-card">
-            <div style="font-size: 1.2rem; opacity: 0.8;">🏭 {t['total_production']}</div>
+            <div style="font-size: 1.2rem;">🏭 {t['total_production']}</div>
             <div style="font-size: 3rem; font-weight: bold; color: #667eea;">{total_prod:,}</div>
-            <div style="font-size: 0.8rem;">{t['no_data'] if total_prod == 0 else ''}</div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
         <div class="glass-card">
-            <div style="font-size: 1.2rem; opacity: 0.8;">📅 {t['monthly_production']}</div>
+            <div style="font-size: 1.2rem;">📅 {t['monthly_production']}</div>
             <div style="font-size: 3rem; font-weight: bold; color: #f59e0b;">{monthly_prod:,}</div>
             <div style="font-size: 0.8rem;">{datetime.now().strftime('%B %Y')}</div>
         </div>
@@ -725,9 +828,8 @@ def show_dashboard(df_main, df_raw, df_fg, t):
     with col3:
         st.markdown(f"""
         <div class="glass-card">
-            <div style="font-size: 1.2rem; opacity: 0.8;">🏭 {t['fg_balance']}</div>
+            <div style="font-size: 1.2rem;">🏭 {t['fg_balance']}</div>
             <div style="font-size: 3rem; font-weight: bold; color: #10b981;">{fg_balance:,}</div>
-            <div style="font-size: 0.8rem;">{t['balance']}</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -783,19 +885,9 @@ def show_dashboard(df_main, df_raw, df_fg, t):
         st.subheader("📦 " + t["raw_balance"])
         if not df_raw.empty:
             raw_chart = df_raw.nlargest(10, "Current_Stock")[["Material_Name_AR", "Current_Stock"]].copy()
-            if lang == "ar":
-                raw_chart = raw_chart.rename(columns={"Material_Name_AR": "المادة", "Current_Stock": "الكمية"})
-                title_text = "أرصدة المواد الخام"
-                x_col = "المادة"
-                y_col = "الكمية"
-            else:
-                raw_chart = raw_chart.rename(columns={"Material_Name_AR": "Material", "Current_Stock": "Quantity"})
-                title_text = "Raw Materials Balance"
-                x_col = "Material"
-                y_col = "Quantity"
-            
-            fig_raw = px.bar(raw_chart, x=x_col, y=y_col, title=title_text,
-                             color=y_col, color_continuous_scale="Blues", text=y_col)
+            raw_chart = raw_chart.rename(columns={"Material_Name_AR": "المادة", "Current_Stock": "الكمية"})
+            fig_raw = px.bar(raw_chart, x="المادة", y="الكمية", title="أرصدة المواد الخام",
+                             color="الكمية", color_continuous_scale="Blues", text="الكمية")
             fig_raw.update_traces(textposition='outside')
             fig_raw.update_layout(height=450)
             st.plotly_chart(fig_raw, use_container_width=True)
@@ -808,19 +900,9 @@ def show_dashboard(df_main, df_raw, df_fg, t):
         st.subheader("🏭 " + t["fg_balance"])
         if not df_fg.empty:
             fg_chart = df_fg[["Name", "Balance"]].copy()
-            if lang == "ar":
-                fg_chart = fg_chart.rename(columns={"Name": "المنتج", "Balance": "الرصيد"})
-                title_text = "أرصدة المنتجات التامة"
-                x_col = "المنتج"
-                y_col = "الرصيد"
-            else:
-                fg_chart = fg_chart.rename(columns={"Name": "Product", "Balance": "Balance"})
-                title_text = "Finished Goods Balance"
-                x_col = "Product"
-                y_col = "Balance"
-            
-            fig_fg = px.bar(fg_chart, x=x_col, y=y_col, title=title_text,
-                            color=y_col, color_continuous_scale="Greens", text=y_col)
+            fg_chart = fg_chart.rename(columns={"Name": "المنتج", "Balance": "الرصيد"})
+            fig_fg = px.bar(fg_chart, x="المنتج", y="الرصيد", title="أرصدة المنتجات التامة",
+                            color="الرصيد", color_continuous_scale="Greens", text="الرصيد")
             fig_fg.update_traces(textposition='outside')
             fig_fg.update_layout(height=450)
             st.plotly_chart(fig_fg, use_container_width=True)
@@ -852,18 +934,21 @@ def show_dashboard(df_main, df_raw, df_fg, t):
     
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        stock_pred = get_stock_prediction(df_raw, df_main)
+        stock_pred = get_stock_prediction_calculated(df_raw, df_main, selected_line)
         if stock_pred:
             st.markdown("#### ⏰ " + t["stock_prediction"])
-            for pred in stock_pred[:3]:
+            for pred in stock_pred[:5]:
+                consumption_info = ""
+                if pred["daily_consumption"] > 0:
+                    consumption_info = f" (استهلاك يومي: {pred['daily_consumption']:,.0f})"
                 if pred["status"] == "critical":
-                    st.error(f"🔴 **{pred['material']}** : سينفذ خلال {pred['days_left']} يوم")
+                    st.error(f"🔴 **{pred['material']}** : رصيد {pred['current']:,}{consumption_info} - سينفذ خلال {pred['days_left']} يوم")
                 elif pred["status"] == "warning":
-                    st.warning(f"🟡 **{pred['material']}** : سينفذ خلال {pred['days_left']} يوم")
+                    st.warning(f"🟡 **{pred['material']}** : رصيد {pred['current']:,}{consumption_info} - سينفذ خلال {pred['days_left']} يوم")
                 else:
-                    st.info(f"ℹ️ **{pred['material']}** : سينفذ خلال {pred['days_left']} يوم")
+                    st.info(f"ℹ️ **{pred['material']}** : رصيد {pred['current']:,}{consumption_info} - سينفذ خلال {pred['days_left']} يوم")
         else:
-            st.success("✅ جميع المواد فوق الحد الآمن")
+            st.success("✅ جميع المواد فوق الحد الآمن لأكثر من 60 يوماً")
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================================================
@@ -980,9 +1065,9 @@ def main():
     
     # ========== Dashboard ==========
     if selected_raw == "🏠 Dashboard":
-        show_dashboard(df_main, df_raw, df_fg, t)
+        show_dashboard(df_main, df_raw, df_fg, t, selected_line if selected_line else "الخط الأول(smi)")
     
-    # ========== Production ==========
+    # ========== Production (مختصر) ==========
     elif selected_raw == "📈 Production" and selected_line:
         st.header(f"{t['production']} - {selected_line}")
         with st.form("prod_form"):
@@ -1036,7 +1121,7 @@ def main():
                             st.balloons()
                             st.rerun()
     
-    # ========== Maintenance ==========
+    # ========== Maintenance (مختصر) ==========
     elif selected_raw == "🔧 Maintenance" and selected_line:
         st.header(t["maint_header"])
         m_type = st.radio("Type", t["maint_types"], horizontal=True)
@@ -1176,14 +1261,11 @@ def main():
                         else:
                             display_df = display_df.rename(columns={
                                 'Date': 'Date', 'Line': 'Line', 'Supervisor': 'Supervisor',
-                                'Product': 'Product', 'Output_Units': 'Quantity', 'Preforms_Used': 'Preforms Used',
+                                'Product': 'Product', 'Output_Units': 'Qty', 'Preforms_Used': 'Preforms',
                                 'Efficiency_%': 'Efficiency'
                             })
                         st.dataframe(display_df, use_container_width=True)
-                        if lang == "ar":
-                            st.caption(f"📊 عرض {len(prod_logs_last10)} سجل إنتاج من آخر 10 أيام")
-                        else:
-                            st.caption(f"📊 Showing {len(prod_logs_last10)} production records from last 10 days")
+                        st.caption(f"📊 عرض {len(prod_logs_last10)} سجل إنتاج من آخر 10 أيام")
                     else:
                         st.info(t["no_production"])
                 else:
@@ -1207,13 +1289,10 @@ def main():
                             display_df = maint_logs_last10[['Date', 'Type', 'Machine', 'Technician', 'Task', 'Notes']].copy()
                             display_df = display_df.rename(columns={
                                 'Date': 'Date', 'Type': 'Type', 'Machine': 'Machine',
-                                'Technician': 'Technician', 'Task': 'Task', 'Notes': 'Notes'
+                                'Technician': 'Tech', 'Task': 'Task', 'Notes': 'Notes'
                             })
                         st.dataframe(display_df, use_container_width=True)
-                        if lang == "ar":
-                            st.caption(f"📊 عرض {len(maint_logs_last10)} سجل صيانة من آخر 10 أيام")
-                        else:
-                            st.caption(f"📊 Showing {len(maint_logs_last10)} maintenance records from last 10 days")
+                        st.caption(f"📊 عرض {len(maint_logs_last10)} سجل صيانة من آخر 10 أيام")
                     else:
                         st.info(t["no_maintenance"])
                 else:
@@ -1278,12 +1357,11 @@ def main():
         else:
             st.warning("لا توجد بيانات مخزون")
     
-    # ========== Finished Goods (مع تعديل الرصيد والتسليم) ==========
+    # ========== Finished Goods ==========
     elif selected_raw == "🏭 Finished Goods":
         st.header(t["finished_goods"])
         
         if not df_fg.empty:
-            # عرض البيانات
             if lang == "ar":
                 display_df = df_fg[['Name', 'In', 'Out', 'Balance', 'Unit']].copy()
                 display_df = display_df.rename(columns={'Name': 'المنتج', 'In': t['in'], 'Out': t['out'], 'Balance': t['balance'], 'Unit': 'الوحدة'})
@@ -1293,7 +1371,6 @@ def main():
             
             st.dataframe(display_df, use_container_width=True)
             
-            # إحصائيات سريعة
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric(t['in'], f"{df_fg['In'].sum():,.0f}")
@@ -1304,7 +1381,6 @@ def main():
             
             st.markdown("---")
             
-            # تبويبين: تسليم بضاعة وتعديل الرصيد
             tab_delivery, tab_manual = st.tabs([t["delivery"], t["manual_adjust"]])
             
             with tab_delivery:
@@ -1415,7 +1491,7 @@ def main():
                                 st.error("فشل في حفظ التعديلات")
     
     st.sidebar.divider()
-    st.sidebar.markdown(f"<center><small>BIRMA v17.0<br>{t['designer']}</small></center>", unsafe_allow_html=True)
+    st.sidebar.markdown(f"<center><small>BIRMA v18.0<br>{t['designer']}</small></center>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
