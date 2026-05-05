@@ -1160,6 +1160,11 @@ def main():
                 prod_logs = df_main[df_main['Type'] == 'Production'] if 'Type' in df_main.columns else pd.DataFrame()
                 if not prod_logs.empty:
                     prod_logs = prod_logs.reset_index(drop=True)
+                    
+                    # التأكد من وجود عمود Waste_Bottles
+                    if 'Waste_Bottles' not in prod_logs.columns:
+                        prod_logs['Waste_Bottles'] = 0
+                    
                     display_cols = ['Date', 'Line', 'Supervisor', 'Product', 'Output_Units', 'Preforms_Used', 'Waste_Bottles', 'Efficiency_%']
                     available_cols = [col for col in display_cols if col in prod_logs.columns]
                     display_df = prod_logs[available_cols].copy()
@@ -1177,10 +1182,11 @@ def main():
                             'Waste_Bottles': 'Waste', 'Efficiency_%': 'Efficiency'
                         })
                     
-                    if 'Date' in display_df.columns:
-                        display_df['Date'] = pd.to_datetime(display_df['Date'])
-                        display_df = display_df[display_df['Date'] >= ten_days_ago]
-                        display_df = display_df.sort_values('Date', ascending=False)
+                    if 'التاريخ' in display_df.columns or 'Date' in display_df.columns:
+                        date_col = 'التاريخ' if 'التاريخ' in display_df.columns else 'Date'
+                        display_df[date_col] = pd.to_datetime(display_df[date_col])
+                        display_df = display_df[display_df[date_col] >= ten_days_ago]
+                        display_df = display_df.sort_values(date_col, ascending=False)
                     
                     if not display_df.empty:
                         st.dataframe(display_df, use_container_width=True)
