@@ -1,9 +1,7 @@
-streamlit
-st-gsheets-connection
+streamlit==1.28.0
 pandas
-scikit-learn
-plotly
-requests
-Pillow
 openpyxl
-st-gsheets-connection
+xlrd
+requests
+plotly
+st-gsheets-connection==0.1.0
